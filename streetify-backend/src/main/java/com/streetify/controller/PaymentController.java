@@ -22,18 +22,8 @@ public class PaymentController {
         this.jwtUtil = jwtUtil;
     }
 
-    /**
-     * POST /api/payments/process
-     *
-     * Processes payment for a COMPLETED trip.
-     * Deducts 15% commission, credits driver wallet.
-     * Returns a clean receipt object.
-     *
-     * Frontend: Payment.tsx "Pay Now" button.
-     *
-     * @param dto           PaymentRequestDTO { tripId, paymentMethod }
-     * @param authorization Bearer JWT token
-     */
+
+
     @PostMapping("/process")
     @PreAuthorize("hasAnyRole('PASSENGER','ADMIN')")
     public ResponseEntity<PaymentReceiptDTO> processPayment(
