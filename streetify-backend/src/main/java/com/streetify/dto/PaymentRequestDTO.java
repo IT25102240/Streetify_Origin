@@ -3,9 +3,8 @@ package com.streetify.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-/**
+/** IT25102225
  * PaymentRequestDTO — Request body for POST /api/payments/process
- * Plain Java (no Lombok — Java 24 compatibility).
  */
 public class PaymentRequestDTO {
 
@@ -13,11 +12,12 @@ public class PaymentRequestDTO {
     private Long tripId;
 
     @NotBlank(message = "Payment method is required")
-    private String paymentMethod; // CASH | CARD | WALLET
+    private String paymentMethod;
 
-    // For CARD payments — masked card details for display only
+
     private String cardLastFour;
-    private String cardType;     // VISA | MASTERCARD
+    private String cardType;
+
 
     public PaymentRequestDTO() {}
 
@@ -32,4 +32,6 @@ public class PaymentRequestDTO {
 
     public String getCardType() { return cardType; }
     public void setCardType(String cardType) { this.cardType = cardType; }
+
+
 }
