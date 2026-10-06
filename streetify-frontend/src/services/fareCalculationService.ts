@@ -1,15 +1,5 @@
-/**
- * FareCalculationService — Calculates trip fares based on:
- * - Base fare per vehicle type
- * - Distance traveled (per km rate)
- * - Time duration (per minute rate)
- * - Fuel cost calculation
- * - Demand/surge pricing
- * - Platform fee
- *
- * Generates detailed receipts for both driver and passenger
- */
 
+//IT25102225
 export type VehicleType = "STANDARD" | "XL" | "MOTO" | "TUK";
 export type PaymentMethod = "CASH" | "CARD" | "WALLET";
 
@@ -51,7 +41,7 @@ export interface ReceiptData extends TripDetails {
     receiptNumber: string;
 }
 
-// Vehicle type configurations with Sri Lankan market rates
+//vehicle type configurations
 const VEHICLE_CONFIGS: Record<VehicleType, {
     baseFare: number;
     perKmRate: number;
@@ -95,12 +85,13 @@ const VEHICLE_CONFIGS: Record<VehicleType, {
 };
 
 const PLATFORM_COMMISSION_RATE = 0.15; // 15%
-const PLATFORM_FEE = 4; // Fixed platform fee in LKR
+const PLATFORM_FEE = 4;
 
 class FareCalculationServiceImpl {
-    /**
-     * Calculate demand/surge multiplier based on time and simulated demand
-     */
+
+  //calculate demand
+
+
     private calculateDemandMultiplier(vehicleType: VehicleType): number {
         const config = VEHICLE_CONFIGS[vehicleType];
         const hour = new Date().getHours();
@@ -121,15 +112,14 @@ class FareCalculationServiceImpl {
             multiplier = config.demandMultiplier.min + (config.demandMultiplier.max - config.demandMultiplier.min) * 0.3;
         }
 
-        // Add some randomness to simulate real demand
+        //Add randomness
         multiplier += (Math.random() - 0.5) * 0.2;
 
         return Math.max(config.demandMultiplier.min, Math.min(config.demandMultiplier.max, multiplier));
     }
 
-    /**
-     * Calculate fare breakdown for a trip
-     */
+  //calculate fare breakdown for a trip
+
     calculateFare(
         vehicleType: VehicleType,
         distanceKm: number,
@@ -163,16 +153,15 @@ class FareCalculationServiceImpl {
         };
     }
 
-    /**
-     * Estimate fare before trip (for booking screen)
-     */
+      //estimate fare before trip (for booking screen)
+
     estimateFare(vehicleType: VehicleType, estimatedDistanceKm: number, estimatedDurationMinutes: number): FareBreakdown {
         return this.calculateFare(vehicleType, estimatedDistanceKm, estimatedDurationMinutes);
     }
 
-    /**
-     * Generate complete receipt data for a completed trip
-     */
+
+     //generate complete receipt data for a completed trip
+
     generateReceipt(tripDetails: TripDetails): ReceiptData {
         const fareBreakdown = this.calculateFare(
             tripDetails.vehicleType,
@@ -190,9 +179,9 @@ class FareCalculationServiceImpl {
         };
     }
 
-    /**
-     * Format receipt for display (driver view)
-     */
+
+     //format receipt for display(driver view)
+
     formatDriverReceipt(receipt: ReceiptData): string {
         const { fareBreakdown, ...trip } = receipt;
         return `
@@ -233,9 +222,9 @@ ${trip.paymentMethod === "CASH" ? "Collect CASH from passenger" : "Amount settle
     `.trim();
     }
 
-    /**
-     * Format receipt for display (passenger view)
-     */
+
+     //format receipt for display(passenger view)
+
     formatPassengerReceipt(receipt: ReceiptData): string {
         const { fareBreakdown, ...trip } = receipt;
         return `
@@ -269,19 +258,33 @@ Thank you for riding with Streetify!
     `.trim();
     }
 
-    /**
-     * Get vehicle config for display
-     */
+//Get vehicle config for display
+
     getVehicleConfig(vehicleType: VehicleType) {
         return VEHICLE_CONFIGS[vehicleType];
     }
 
-    /**
-     * Get all vehicle configs
-     */
+// Get all vehicle configs
+
     getAllVehicleConfigs() {
         return VEHICLE_CONFIGS;
     }
 }
 
 export const fareCalculationService = new FareCalculationServiceImpl();
+
+
+/**
+ * FareCalculationService — Calculates trip fares based on:
+
+ * Base fare per vehicle type
+ * Distance traveled (per km rate)
+ * Time duration (per minute rate)
+ * Fuel cost calculation
+ * Demand/surge pricing
+ * Platform fee
+
+ * Generates detailed receipts for  driver and passenger both
+
+ */
+
