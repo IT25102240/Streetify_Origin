@@ -19,9 +19,11 @@ public class WalletSettlementStrategy implements PaymentSettlementStrategy {
     public void settle(Long passengerId, Long driverId,
                        double grossAmount, double commission, double driverNet) {
         //Debit passenger's wallet
+
         userDAO.debitWallet(passengerId, grossAmount);
 
         // Credit driver's wallet with net earnings (after commission)
+
         driverDAO.creditWallet(driverId, driverNet);
 
         System.out.println("[WalletSettlementStrategy] Passenger #" + passengerId
