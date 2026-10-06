@@ -1,18 +1,17 @@
+//IT25102225
+
 package com.streetify.dto;
 
 import java.time.LocalDateTime;
 
-/**
- * PaymentReceiptDTO — Response for POST /api/payments/process
- * Plain Java with manual Builder (no Lombok — Java 24 compatibility).
- */
+
 public class PaymentReceiptDTO {
 
     private Long paymentId;
     private Long tripId;
     private String status;          // SUCCESS | FAILED
 
-    // Amounts (LKR)
+
     private Double grossAmount;
     private Double platformCommission;
     private Double driverNet;
