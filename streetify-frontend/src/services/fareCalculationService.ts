@@ -266,7 +266,7 @@ Thank you for riding with Streetify!
         return VEHICLE_CONFIGS[vehicleType];
     }
 
-//get all vehicle configs
+// get all vehicle configs
 
     getAllVehicleConfigs() {
         return VEHICLE_CONFIGS;
