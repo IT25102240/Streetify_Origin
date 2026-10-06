@@ -28,16 +28,17 @@ public class PaymentStrategyFactory {
 }
 
 /**
+
 -----------IT25102225---------------
  * This class resolves which PaymentSettlementStrategy to use
  * based on the payment method string from the booking request.
- *
+
+
  * The Context (PaymentService) calls this factory to get the correct
  * strategy, then delegates to it — it never contains payment-method
  * logic itself.
- *
  * Usage in PaymentService:
  *   PaymentSettlementStrategy strategy =
- *       PaymentStrategyFactory.resolve(method, userDAO, driverDAO);
+ *   PaymentStrategyFactory.resolve(method, userDAO, driverDAO);
  *   strategy.settle(passengerId, driverId, grossAmount, commission, driverNet);
  */
