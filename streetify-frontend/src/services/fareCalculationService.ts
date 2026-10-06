@@ -43,26 +43,27 @@ export interface ReceiptData extends TripDetails {
 
 //vehicle type configurations
 const VEHICLE_CONFIGS: Record<VehicleType, {
+
     baseFare: number;
     perKmRate: number;
     perMinuteRate: number;
-    fuelConsumptionLtrPerKm: number; // Liters per km
-    fuelPricePerLtr: number; // LKR per liter (current Sri Lankan price)
-    demandMultiplier: { min: number; max: number }; // Surge pricing range
+    fuelConsumptionLtrPerKm: number;
+    fuelPricePerLtr: number;
+    demandMultiplier: { min: number; max: number };
 }> = {
     STANDARD: {
         baseFare: 200,
         perKmRate: 33,
         perMinuteRate: 5,
-        fuelConsumptionLtrPerKm: 0.08, // ~12.5 km/L
-        fuelPricePerLtr: 350, // Current petrol price in LKR
+        fuelConsumptionLtrPerKm: 0.08,
+        fuelPricePerLtr: 350,
         demandMultiplier: { min: 1.0, max: 2.5 },
     },
     XL: {
         baseFare: 340,
         perKmRate: 48,
         perMinuteRate: 7,
-        fuelConsumptionLtrPerKm: 0.12, // ~8.3 km/L
+        fuelConsumptionLtrPerKm: 0.12,
         fuelPricePerLtr: 350,
         demandMultiplier: { min: 1.0, max: 2.5 },
     },
@@ -70,7 +71,7 @@ const VEHICLE_CONFIGS: Record<VehicleType, {
         baseFare: 80,
         perKmRate: 18,
         perMinuteRate: 3,
-        fuelConsumptionLtrPerKm: 0.03, // ~33 km/L
+        fuelConsumptionLtrPerKm: 0.03,
         fuelPricePerLtr: 350,
         demandMultiplier: { min: 1.0, max: 2.0 },
     },
@@ -78,13 +79,13 @@ const VEHICLE_CONFIGS: Record<VehicleType, {
         baseFare: 120,
         perKmRate: 22,
         perMinuteRate: 4,
-        fuelConsumptionLtrPerKm: 0.04, // ~25 km/L (3-wheeler)
+        fuelConsumptionLtrPerKm: 0.04,
         fuelPricePerLtr: 350,
         demandMultiplier: { min: 1.0, max: 2.0 },
     },
 };
 
-const PLATFORM_COMMISSION_RATE = 0.15; // 15%
+const PLATFORM_COMMISSION_RATE = 0.15;
 const PLATFORM_FEE = 4;
 
 class FareCalculationServiceImpl {
@@ -96,12 +97,13 @@ class FareCalculationServiceImpl {
         const config = VEHICLE_CONFIGS[vehicleType];
         const hour = new Date().getHours();
 
-        // Peak hours: 7-9 AM, 5-7 PM
+        //peak hours: 7-9 AM, 5-7 PM
         const isMorningPeak = hour >= 7 && hour <= 9;
         const isEveningPeak = hour >= 17 && hour <= 19;
         const isPeak = isMorningPeak || isEveningPeak;
 
-        // Weekend factor
+        //weekend factor
+
         const isWeekend = [0, 6].includes(new Date().getDay());
 
         let multiplier = config.demandMultiplier.min;
@@ -112,7 +114,7 @@ class FareCalculationServiceImpl {
             multiplier = config.demandMultiplier.min + (config.demandMultiplier.max - config.demandMultiplier.min) * 0.3;
         }
 
-        //Add randomness
+        //add randomness
         multiplier += (Math.random() - 0.5) * 0.2;
 
         return Math.max(config.demandMultiplier.min, Math.min(config.demandMultiplier.max, multiplier));
@@ -258,13 +260,13 @@ Thank you for riding with Streetify!
     `.trim();
     }
 
-//Get vehicle config for display
+//get vehicle config for display
 
     getVehicleConfig(vehicleType: VehicleType) {
         return VEHICLE_CONFIGS[vehicleType];
     }
 
-// Get all vehicle configs
+//get all vehicle configs
 
     getAllVehicleConfigs() {
         return VEHICLE_CONFIGS;
