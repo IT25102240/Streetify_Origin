@@ -42,9 +42,11 @@ export default function ScreenPayment() {
     const [gatewayRef, setGatewayRef] = useState("");
     const [emailSent, setEmailSent] = useState(false);
 
+
     useEffect(() => {
         const active = tabStorage.getItem("active_trip") || tabStorage.getItem("last_completed_trip");
         if (active) {
+
             try {
                 const parsed = JSON.parse(active);
                 setTrip({
@@ -52,6 +54,7 @@ export default function ScreenPayment() {
                     ...parsed,
                     tripId: parsed.tripId || DEFAULT_DEMO_TRIP.tripId
                 });
+
             } catch (e) {
                 console.error("Failed to parse active trip", e);
                 setTrip(DEFAULT_DEMO_TRIP);
