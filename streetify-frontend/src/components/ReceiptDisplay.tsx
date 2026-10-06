@@ -247,13 +247,26 @@ export default function ReceiptDisplay({
                                         <Btn v="secondary" size="lg" full onClick={onViewHistory}>
                                             📋 Trip History
                                         </Btn>
-                                    )}
+
+                                    )
+                                    }
+
+
                                 </div>
                             )}
                         </div>
+
                     </div>
                 </Card>
             </div>
         </div>
+
+
+
     );
+
+
+
+
+
 }
