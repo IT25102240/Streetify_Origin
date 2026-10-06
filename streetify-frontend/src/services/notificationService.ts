@@ -1,5 +1,7 @@
-/**
- * External System: Notification Service
+
+
+
+/**  IT25102225
  * Manages SMS alerts, Push notifications, OTP dispatch, and Email receipts.
  */
 
@@ -12,7 +14,7 @@ export interface AppNotification {
     message: string;
     timestamp: string;
     read: boolean;
-    code?: string; // For OTP codes
+    code?: string; //for OTP codes
     data?: any;
 }
 
@@ -47,7 +49,7 @@ export const NotificationService = {
         const updated = [full, ...current].slice(0, 30); // Keep last 30
         localStorage.setItem(this.getStorageKey(), JSON.stringify(updated));
 
-        // Dispatch global event for in-app bell badge & toast popups
+        //dispatch global event for in-app bell badge & toast popups
         window.dispatchEvent(new CustomEvent("streetify-notification-received", { detail: full }));
         return full;
     },
