@@ -107,8 +107,5 @@ public class Payment {
         public PaymentBuilder status(PaymentStatus s) { p.status = s; return this; }
         public PaymentBuilder retryCount(Integer r) { p.retryCount = r; return this; }
         public Payment build() { return p; }
-
     }
-
-
 }
