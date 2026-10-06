@@ -12,16 +12,16 @@ GO
 CREATE OR ALTER TRIGGER trg_ProtectFinalizedTrips
 ON trips
 AFTER UPDATE
-AS
-BEGIN
-    SET NOCOUNT ON;
+                          AS
+                              BEGIN
+      SET NOCOUNT ON;
 
-    -- Guard: prevent recursive trigger execution
-    IF TRIGGER_NESTLEVEL(@@PROCID) > 1 RETURN;
+-- Guard: prevent recursive trigger execution
+IF TRIGGER_NESTLEVEL(@@PROCID) > 1 RETURN;
 
     -- Check: Was the ORIGINAL status a terminal state (COMPLETED or CANCELLED)?
     --        AND: Is someone trying to mutate protected financial columns?
-    IF EXISTS (
+IF EXISTS (
         SELECT 1
         FROM deleted d
         INNER JOIN inserted i ON d.id = i.id
@@ -34,12 +34,12 @@ BEGIN
              OR d.status               <> i.status
           )
     )
-    BEGIN
-        ROLLBACK TRANSACTION;
-        ;THROW 50101,
+BEGIN
+ROLLBACK TRANSACTION;
+;THROW 50101,
             'CRITICAL INTEGRITY VIOLATION: Finalized trips (COMPLETED/CANCELLED) are immutable financial records. Fare, commission, distance, and status cannot be altered after finalization.',
             1;
-    END
+END
 END;
 GO
 
@@ -54,26 +54,26 @@ GO
 
 -- Test 1: Attempt to change the fare of a COMPLETED trip (SHOULD FAIL with error 50101)
 BEGIN TRY
-    UPDATE trips SET total_fare = 1.00 WHERE id = 1;   -- Fraudulent edit!
-    PRINT 'Update succeeded (UNEXPECTED — trigger failed!)';
+UPDATE trips SET total_fare = 1.00 WHERE id = 1;   -- Fraudulent edit!
+PRINT 'Update succeeded (UNEXPECTED — trigger failed!)';
 END TRY
 BEGIN CATCH
-    SELECT
-        ERROR_NUMBER()   AS error_number,
-        ERROR_MESSAGE()  AS error_message,
-        ERROR_SEVERITY() AS severity;
+SELECT
+    ERROR_NUMBER()   AS error_number,
+    ERROR_MESSAGE()  AS error_message,
+    ERROR_SEVERITY() AS severity;
 END CATCH;
 GO
 
 -- Test 2: Attempt to reopen a COMPLETED trip (SHOULD FAIL with error 50101)
 BEGIN TRY
-    UPDATE trips SET status = 'REQUESTED' WHERE id = 1;
+UPDATE trips SET status = 'REQUESTED' WHERE id = 1;
 END TRY
 BEGIN CATCH
-    SELECT
-        ERROR_NUMBER()   AS error_number,
-        ERROR_MESSAGE()  AS error_message,
-        ERROR_SEVERITY() AS severity;
+SELECT
+    ERROR_NUMBER()   AS error_number,
+    ERROR_MESSAGE()  AS error_message,
+    ERROR_SEVERITY() AS severity;
 END CATCH;
 GO
 

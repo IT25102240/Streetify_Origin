@@ -29,34 +29,34 @@ GO
 -- BCrypt for '1111':     $2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m
 -- ════════════════════════════════════════════════════════════════════════════════
 INSERT INTO users (dtype, active, suspended, email, first_name, last_name, password_hash, plain_password, phone, role, admin_role, created_at, updated_at)
-VALUES 
-('USER', 1, 0, 'admin@streetify.com',   'System',   'Admin',            '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111',     '0112000000', 'ADMIN', 'SUPER_ADMIN',  GETDATE(), GETDATE()),
-('USER', 1, 0, 'vidura@streetify.lk',    'Vidura',   'Rammandalagedara', '$2a$10$56.JCXgXdfdKH7ZCidwXB.is7VBKrxmtHdO7v7bXa631qUqtYSI06', 'admin123', '0711000001', 'ADMIN', 'SUPER_ADMIN',  GETDATE(), GETDATE()),
-('USER', 1, 0, 'lahiru@streetify.lk',    'Lahiru',   'Nayanamina',       '$2a$10$56.JCXgXdfdKH7ZCidwXB.is7VBKrxmtHdO7v7bXa631qUqtYSI06', 'admin123', '0711000002', 'ADMIN', 'USER_MGMT',    GETDATE(), GETDATE()),
-('USER', 1, 0, 'chanuka@streetify.lk',   'Chanuka',  'Dharmakeerthi',    '$2a$10$56.JCXgXdfdKH7ZCidwXB.is7VBKrxmtHdO7v7bXa631qUqtYSI06', 'admin123', '0711000003', 'ADMIN', 'BOOKING_MGMT', GETDATE(), GETDATE()),
-('USER', 1, 0, 'tharindu@streetify.lk',  'Tharindu', 'Senaka',           '$2a$10$56.JCXgXdfdKH7ZCidwXB.is7VBKrxmtHdO7v7bXa631qUqtYSI06', 'admin123', '0711000004', 'ADMIN', 'DRIVER_MGMT',  GETDATE(), GETDATE()),
-('USER', 1, 0, 'daham@streetify.lk',     'Daham',    'Edirisinghe',      '$2a$10$56.JCXgXdfdKH7ZCidwXB.is7VBKrxmtHdO7v7bXa631qUqtYSI06', 'admin123', '0711000005', 'ADMIN', 'PAYMENT_MGMT', GETDATE(), GETDATE()),
-('USER', 1, 0, 'mithun@streetify.lk',    'Mithun',   'Weerasingha',      '$2a$10$56.JCXgXdfdKH7ZCidwXB.is7VBKrxmtHdO7v7bXa631qUqtYSI06', 'admin123', '0711000006', 'ADMIN', 'REVIEW_MGMT',  GETDATE(), GETDATE());
+VALUES
+    ('USER', 1, 0, 'admin@streetify.com',   'System',   'Admin',            '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111',     '0112000000', 'ADMIN', 'SUPER_ADMIN',  GETDATE(), GETDATE()),
+    ('USER', 1, 0, 'vidura@streetify.lk',    'Vidura',   'Rammandalagedara', '$2a$10$56.JCXgXdfdKH7ZCidwXB.is7VBKrxmtHdO7v7bXa631qUqtYSI06', 'admin123', '0711000001', 'ADMIN', 'SUPER_ADMIN',  GETDATE(), GETDATE()),
+    ('USER', 1, 0, 'lahiru@streetify.lk',    'Lahiru',   'Nayanamina',       '$2a$10$56.JCXgXdfdKH7ZCidwXB.is7VBKrxmtHdO7v7bXa631qUqtYSI06', 'admin123', '0711000002', 'ADMIN', 'USER_MGMT',    GETDATE(), GETDATE()),
+    ('USER', 1, 0, 'chanuka@streetify.lk',   'Chanuka',  'Dharmakeerthi',    '$2a$10$56.JCXgXdfdKH7ZCidwXB.is7VBKrxmtHdO7v7bXa631qUqtYSI06', 'admin123', '0711000003', 'ADMIN', 'BOOKING_MGMT', GETDATE(), GETDATE()),
+    ('USER', 1, 0, 'tharindu@streetify.lk',  'Tharindu', 'Senaka',           '$2a$10$56.JCXgXdfdKH7ZCidwXB.is7VBKrxmtHdO7v7bXa631qUqtYSI06', 'admin123', '0711000004', 'ADMIN', 'DRIVER_MGMT',  GETDATE(), GETDATE()),
+    ('USER', 1, 0, 'daham@streetify.lk',     'Daham',    'Edirisinghe',      '$2a$10$56.JCXgXdfdKH7ZCidwXB.is7VBKrxmtHdO7v7bXa631qUqtYSI06', 'admin123', '0711000005', 'ADMIN', 'PAYMENT_MGMT', GETDATE(), GETDATE()),
+    ('USER', 1, 0, 'mithun@streetify.lk',    'Mithun',   'Weerasingha',      '$2a$10$56.JCXgXdfdKH7ZCidwXB.is7VBKrxmtHdO7v7bXa631qUqtYSI06', 'admin123', '0711000006', 'ADMIN', 'REVIEW_MGMT',  GETDATE(), GETDATE());
 GO
 
 -- ════════════════════════════════════════════════════════════════════════════════
 -- 2. Insert Dummy Passengers
 -- ════════════════════════════════════════════════════════════════════════════════
 INSERT INTO users (dtype, active, suspended, email, first_name, last_name, password_hash, plain_password, phone, role, wallet_balance, preferred_payment_method, created_at, updated_at)
-VALUES 
-('PASSENGER', 1, 0, 'passenger1@streetify.com', 'Lahiru', 'Peris',    '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111', '+94771111111', 'PASSENGER', 5000.00, 'WALLET', GETDATE(), GETDATE()),
-('PASSENGER', 1, 0, 'passenger2@streetify.com', 'Gihan',  'Devis',    '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111', '+94772222222', 'PASSENGER', 1500.00, 'CARD',   GETDATE(), GETDATE()),
-('PASSENGER', 1, 0, 'kasun@streetify.com',      'Kasun', 'Fernando', '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111', '+94773333333', 'PASSENGER', 250.00,  'CASH',   GETDATE(), GETDATE());
+VALUES
+    ('PASSENGER', 1, 0, 'passenger1@streetify.com', 'Lahiru', 'Peris',    '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111', '+94771111111', 'PASSENGER', 5000.00, 'WALLET', GETDATE(), GETDATE()),
+    ('PASSENGER', 1, 0, 'passenger2@streetify.com', 'Gihan',  'Devis',    '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111', '+94772222222', 'PASSENGER', 1500.00, 'CARD',   GETDATE(), GETDATE()),
+    ('PASSENGER', 1, 0, 'kasun@streetify.com',      'Kasun', 'Fernando', '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111', '+94773333333', 'PASSENGER', 250.00,  'CASH',   GETDATE(), GETDATE());
 GO
 
 -- ════════════════════════════════════════════════════════════════════════════════
 -- 3. Insert Dummy Drivers
 -- ════════════════════════════════════════════════════════════════════════════════
 INSERT INTO users (dtype, active, suspended, email, first_name, last_name, password_hash, plain_password, phone, role, wallet_balance, average_rating, license_number, nic, total_trips, commission_debt, verification_status, is_online, current_lat, current_lng, created_at, updated_at)
-VALUES 
-('DRIVER', 1, 0, 'driver1@streetify.com', 'Kamal',  'Perera',  '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111', '+94774444444', 'DRIVER', 8500.00, 4.9, 'B1234567', '901234567V', 142, 0.00, 'APPROVED',             1, 6.9271, 79.8612, GETDATE(), GETDATE()),
-('DRIVER', 1, 0, 'driver2@streetify.com', 'Nimal',  'Silva',   '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111', '+94775555555', 'DRIVER', 3200.00, 4.4, 'B9876543', '851234567V', 48,  450.00, 'APPROVED',             1, 6.8649, 79.8997, GETDATE(), GETDATE()),
-('DRIVER', 1, 0, 'driver3@streetify.com', 'Sunil',  'Shantha', '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111', '+94776666666', 'DRIVER', 0.00,    5.0, 'B5554321', '981234567V', 0,   0.00, 'PENDING_VERIFICATION', 0, 6.9147, 79.9729, GETDATE(), GETDATE());
+VALUES
+    ('DRIVER', 1, 0, 'driver1@streetify.com', 'Kamal',  'Perera',  '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111', '+94774444444', 'DRIVER', 8500.00, 4.9, 'B1234567', '901234567V', 142, 0.00, 'APPROVED',             1, 6.9271, 79.8612, GETDATE(), GETDATE()),
+    ('DRIVER', 1, 0, 'driver2@streetify.com', 'Nimal',  'Silva',   '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111', '+94775555555', 'DRIVER', 3200.00, 4.4, 'B9876543', '851234567V', 48,  450.00, 'APPROVED',             1, 6.8649, 79.8997, GETDATE(), GETDATE()),
+    ('DRIVER', 1, 0, 'driver3@streetify.com', 'Sunil',  'Shantha', '$2a$10$cbbzAnogt7aHXIkFuSH/MezEMCiOfZuxH2Q4pDbRv8nUVfe.MJY8m', '1111', '+94776666666', 'DRIVER', 0.00,    5.0, 'B5554321', '981234567V', 0,   0.00, 'PENDING_VERIFICATION', 0, 6.9147, 79.9729, GETDATE(), GETDATE());
 GO
 
 -- ════════════════════════════════════════════════════════════════════════════════
@@ -68,9 +68,9 @@ DECLARE @Driver3_Id BIGINT = (SELECT TOP 1 id FROM users WHERE email = 'driver3@
 
 INSERT INTO vehicles (driver_id, make, model, year_of_manufacture, color, number_plate, vehicle_type, created_at)
 VALUES
-(@Driver1_Id, 'Toyota', 'Prius', 2018, 'Pearl White', 'WP CAB-1234', 'CAR', GETDATE()),
-(@Driver2_Id, 'Bajaj',  'RE 4S', 2021, 'Black/Yellow', 'WP ABF-5678', 'TUK', GETDATE()),
-(@Driver3_Id, 'Nissan', 'Caravan', 2019, 'Silver',     'WP ND-9012',  'VAN', GETDATE());
+    (@Driver1_Id, 'Toyota', 'Prius', 2018, 'Pearl White', 'WP CAB-1234', 'CAR', GETDATE()),
+    (@Driver2_Id, 'Bajaj',  'RE 4S', 2021, 'Black/Yellow', 'WP ABF-5678', 'TUK', GETDATE()),
+    (@Driver3_Id, 'Nissan', 'Caravan', 2019, 'Silver',     'WP ND-9012',  'VAN', GETDATE());
 GO
 
 -- ════════════════════════════════════════════════════════════════════════════════
@@ -134,8 +134,8 @@ DECLARE @Dr2_Id BIGINT = (SELECT TOP 1 driver_id FROM trips WHERE id = @Trip2_Id
 
 INSERT INTO payments (trip_id, passenger_id, driver_id, gross_amount, platform_commission, driver_net, payment_method, status, transaction_ref, retry_count, processed_at, created_at)
 VALUES
-(@Trip1_Id, @P1_Id, @Dr1_Id, 1925.00, 288.75, 1636.25, 'CARD',   'SUCCESS', 'TXN_CARD_894312', 0, DATEADD(hour, -2, GETDATE()), DATEADD(hour, -2, GETDATE())),
-(@Trip2_Id, @P2_Id, @Dr2_Id, 1076.00, 161.40, 914.60,  'WALLET', 'SUCCESS', 'TXN_WLT_110294',  0, GETDATE(), GETDATE());
+    (@Trip1_Id, @P1_Id, @Dr1_Id, 1925.00, 288.75, 1636.25, 'CARD',   'SUCCESS', 'TXN_CARD_894312', 0, DATEADD(hour, -2, GETDATE()), DATEADD(hour, -2, GETDATE())),
+    (@Trip2_Id, @P2_Id, @Dr2_Id, 1076.00, 161.40, 914.60,  'WALLET', 'SUCCESS', 'TXN_WLT_110294',  0, GETDATE(), GETDATE());
 GO
 
 -- ════════════════════════════════════════════════════════════════════════════════
@@ -150,8 +150,8 @@ DECLARE @Driv2 BIGINT = (SELECT TOP 1 driver_id FROM trips WHERE id = @T2_Id);
 
 INSERT INTO reviews (trip_id, passenger_id, driver_id, rating, comment, created_at)
 VALUES
-(@T1_Id, @Pass1, @Driv1, 5, 'Super clean car, friendly driver and arrived right on time!', DATEADD(hour, -2, GETDATE())),
-(@T2_Id, @Pass2, @Driv2, 4, 'Quick tuk ride, navigated through Kottawa traffic nicely.', GETDATE());
+    (@T1_Id, @Pass1, @Driv1, 5, 'Super clean car, friendly driver and arrived right on time!', DATEADD(hour, -2, GETDATE())),
+    (@T2_Id, @Pass2, @Driv2, 4, 'Quick tuk ride, navigated through Kottawa traffic nicely.', GETDATE());
 GO
 
 -- ════════════════════════════════════════════════════════════════════════════════
@@ -163,12 +163,12 @@ DECLARE @Admin_Id       BIGINT = (SELECT TOP 1 id FROM users WHERE email = 'admi
 
 INSERT INTO dispute_tickets (passenger_id, trip_id, subject, description, dispute_type, requested_refund_amount, status, resolution_note, approved_refund_amount, resolved_by_staff_id, created_at, resolved_at)
 VALUES
-(@DisputeUser_Id, @DisputeTrip_Id, 'Overcharged Fare', 'Driver took a longer scenic route near Malabe.', 'OVERCHARGED', 100.00, 'RESOLVED', 'Refunded 100 LKR wallet credit to passenger.', 100.00, @Admin_Id, DATEADD(day, -1, GETDATE()), GETDATE());
+    (@DisputeUser_Id, @DisputeTrip_Id, 'Overcharged Fare', 'Driver took a longer scenic route near Malabe.', 'OVERCHARGED', 100.00, 'RESOLVED', 'Refunded 100 LKR wallet credit to passenger.', 100.00, @Admin_Id, DATEADD(day, -1, GETDATE()), GETDATE());
 
 INSERT INTO audit_logs (performed_by_staff_id, performed_by_email, action_type, description, target_user_id, target_entity_type, target_entity_id, created_at)
 VALUES
-(@Admin_Id, 'admin@streetify.com', 'ADMIN_LOGIN', 'Super Admin logged in successfully.', @Admin_Id, 'USER', @Admin_Id, GETDATE()),
-(@Admin_Id, 'admin@streetify.com', 'DISPUTE_RESOLVED', 'Approved partial refund of 100 LKR.', @DisputeUser_Id, 'DISPUTE_TICKET', 1, GETDATE());
+    (@Admin_Id, 'admin@streetify.com', 'ADMIN_LOGIN', 'Super Admin logged in successfully.', @Admin_Id, 'USER', @Admin_Id, GETDATE()),
+    (@Admin_Id, 'admin@streetify.com', 'DISPUTE_RESOLVED', 'Approved partial refund of 100 LKR.', @DisputeUser_Id, 'DISPUTE_TICKET', 1, GETDATE());
 GO
 
 PRINT '===================================================================';

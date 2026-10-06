@@ -11,7 +11,7 @@ GO
 -- ─────────────────────────────────────────────────────────────────────────────
 
 -- 1.1 Mark all non-completed trips as COMPLETED (useful for testing payment/review screens)
-UPDATE trips 
+UPDATE trips
 SET status = 'COMPLETED',
     completed_at = ISNULL(completed_at, GETDATE()),
     is_paid = 1,
@@ -41,7 +41,7 @@ GO
 -- 2. 🏥 DATABASE HEALTH & RECORD COUNT AUDIT
 -- Run this query to inspect row counts across every table in Streetify
 -- ─────────────────────────────────────────────────────────────────────────────
-SELECT 
+SELECT
     'users' AS table_name, COUNT(*) AS record_count FROM users
 UNION ALL
 SELECT 'vehicles', COUNT(*) FROM vehicles
