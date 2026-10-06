@@ -1,11 +1,4 @@
-/**
- * Screen D — Passenger Payment & Receipt
- * Retry loop for declined cards · PDF-style receipt · CRUD payment processing
- *
- * API hooks:
- *   POST /api/payments/charge { rideId, method, cardToken } → { txnId, status }
- *   GET  /api/payments/receipt/:txnId                       → { pdf_url }
- */
+
 import { useState, useEffect } from "react";
 import { Btn, Card, Field, Pill } from "../ui";
 import { apiClient } from "../api/apiClient";
@@ -324,7 +317,8 @@ export default function ScreenPayment() {
                                 <p className={`text-xs font-extrabold mt-1 ${method === k ? "text-eco" : "text-slate-200"}`}>{label}</p>
                                 <p className="text-[10px] text-slate-400 mt-0.5">{sub}</p>
                             </button>
-                        ))}
+                        ))
+                        }
                     </div>
 
                     {method === "card" && (
@@ -374,7 +368,8 @@ export default function ScreenPayment() {
                             </div>
                             <Field label="Cardholder Name" placeholder="K PERERA" />
                         </div>
-                    )}
+                    )
+                    }
 
                     {method === "wallet" && (
                         <div className="bg-purple-950/30 border border-purple-800/50 rounded-2xl p-4"
@@ -386,7 +381,8 @@ export default function ScreenPayment() {
                             <p className="text-2xl font-extrabold font-mono text-purple-300">LKR 2,500.00</p>
                             <p className="text-xs text-purple-400 mt-1.5">After payment: <strong>LKR 1,260.00</strong> remaining</p>
                         </div>
-                    )}
+                    )
+                    }
 
                     {method === "cash" && (
                         <div className="bg-amber-950/30 border border-amber-800/50 rounded-2xl p-4"
@@ -421,7 +417,8 @@ export default function ScreenPayment() {
                             <p className="text-xs text-red-400/80 font-mono mt-2">Error: PAYMENT_DECLINED · Retry allowed</p>
                         </div>
                     </div>
-                )}
+                )
+                }
 
                 {ps === "declined" ? (
                     <div className="flex gap-2">
@@ -451,7 +448,8 @@ export default function ScreenPayment() {
                     >
                         {ps === "processing" ? "Processing gateway transaction…" : `Pay LKR ${totalAmount.toFixed(0)} via ${method === "card" ? gatewayProvider.toUpperCase() : method.toUpperCase()} →`}
                     </Btn>
-                )}
+                )
+                }
 
                 <p className="text-center text-xs text-slate-400 pb-2">
                     🔒 Payments secured by {gatewayProvider === "payhere" ? "PayHere Sri Lanka" : "Stripe"} · 3D-Secure 2.0 · TLS 1.3
@@ -528,5 +526,12 @@ export default function ScreenPayment() {
                 )}
             </div>
         </div>
+
+
     );
+
+
+
+
+
 }
