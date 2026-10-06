@@ -1,15 +1,12 @@
-/**
- * Screen G — Passenger / Driver Trip History
- * NEW screen — browse past rides, download receipts, re-book
- *
- * API hooks:
- *   GET /api/trips?userId=...&page=1&limit=20 → Trip[]
- *   GET /api/payments/receipt/:txnId           → { pdf_url }
- */
 import { useState, useEffect } from "react";
 import { Btn, Card, Pill } from "../ui";
 import { apiClient } from "../api/apiClient";
 import { tabStorage } from "../utils/storage";
+
+
+
+//        IT25102225
+
 
 type ViewMode = "passenger" | "driver";
 
