@@ -3,6 +3,8 @@
 SELECT * FROM trips;
 
 
+
+
 -- 1. View all active booking requests that are searching for a driver or accepted
 SELECT id, pickup_address, dropoff_address, total_fare FROM trips WHERE status IN ('REQUESTED', 'ACCEPTED');
 
