@@ -9,15 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * PaymentController — Payment processing REST endpoint.
- *
- * Routes:
- *   POST /api/payments/process → Process payment for a completed trip (PASSENGER)
- *
- * All bodies bound via @RequestBody + DTO. No manual JSON extraction.
- * @Transactional is on the service layer (PaymentService), not here.
- */
+
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
