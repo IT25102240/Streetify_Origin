@@ -5,10 +5,12 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-/**
- * Payment — Records the financial transaction for each completed trip.
- * Manual getters/setters (no Lombok — Java 24 compatibility).
- */
+
+//                 IT25102225
+//payment — Records the financial transaction for each completed trip.
+
+
+
 @Entity
 @Table(name = "payments", indexes = {
         @Index(name = "idx_payments_trip", columnList = "trip_id"),
@@ -65,7 +67,9 @@ public class Payment {
 
     public static PaymentBuilder builder() { return new PaymentBuilder(); }
 
-    // ── Getters ──────────────────────────────────────────────────────────────
+
+    //getters
+
     public Long getId() { return id; }
     public Trip getTrip() { return trip; }
     public Passenger getPassenger() { return passenger; }
@@ -80,7 +84,10 @@ public class Payment {
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getProcessedAt() { return processedAt; }
 
-    // ── Setters ──────────────────────────────────────────────────────────────
+
+
+    //setters
+
     public void setId(Long id) { this.id = id; }
     public void setTrip(Trip trip) { this.trip = trip; }
     public void setPassenger(Passenger passenger) { this.passenger = passenger; }
@@ -94,7 +101,10 @@ public class Payment {
     public void setFailureReason(String failureReason) { this.failureReason = failureReason; }
     public void setProcessedAt(LocalDateTime processedAt) { this.processedAt = processedAt; }
 
-    // ── Manual Builder ────────────────────────────────────────────────────────
+
+
+    //manual builder
+
     public static class PaymentBuilder {
         private final Payment p = new Payment();
         public PaymentBuilder trip(Trip t) { p.trip = t; return this; }
@@ -107,5 +117,7 @@ public class Payment {
         public PaymentBuilder status(PaymentStatus s) { p.status = s; return this; }
         public PaymentBuilder retryCount(Integer r) { p.retryCount = r; return this; }
         public Payment build() { return p; }
+
+
     }
 }
