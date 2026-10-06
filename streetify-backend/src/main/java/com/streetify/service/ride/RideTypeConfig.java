@@ -1,5 +1,7 @@
 package com.streetify.service.ride;
 
+
+
 /**
  * RideTypeConfig — Product Interface (GoF Factory Pattern)
  *
