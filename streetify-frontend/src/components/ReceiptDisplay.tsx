@@ -1,7 +1,4 @@
-/**
- * ReceiptDisplay — Component to show trip receipt for both driver and passenger
- * Includes detailed fare breakdown, trip details, and print/email options
- */
+
 
 import { useState, useEffect } from "react";
 import { Btn, Card } from "../ui";
