@@ -5,7 +5,7 @@ package com.streetify.decorator;
  *
  * ─────────────────────────────────────────────────────────────────
  * Pattern   : Decorator (Structural)
- * Member    : Mithun (IT25102193) — Review & Dispute Form
+ * Member    :   Mithun (IT25102193) — Review & Dispute Form
  * Role      : Abstract Decorator — base class for all concrete decorators
  * ─────────────────────────────────────────────────────────────────
  *
