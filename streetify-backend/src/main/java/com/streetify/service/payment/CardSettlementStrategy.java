@@ -2,10 +2,10 @@ package com.streetify.service.payment;
 
 import com.streetify.dao.DriverDAO;
 
-/**
+/** IT25102225
  * CardSettlementStrategy
 
- *   Passenger pays via card through payment gateway then Platform collects the full grossAmount after that
+    Passenger pays via card through payment gateway then Platform collects the full grossAmount after that
      Platform retains 15% commission.then drivers digital wallet is credited with 85%.
  */
 
