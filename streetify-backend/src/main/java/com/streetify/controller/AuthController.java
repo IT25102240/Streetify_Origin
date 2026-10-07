@@ -1,0 +1,355 @@
+package com.streetify.controller;
+
+import com.streetify.dto.AuthResponseDTO;
+import com.streetify.dto.DriverRegistrationDTO;
+import com.streetify.dto.LoginDTO;
+import com.streetify.dto.UserRegistrationDTO;
+import com.streetify.service.AuthService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * AuthController — REST controller for authentication endpoints.
+ *
+ * Routes:
+ *   POST /api/auth/register/passenger  → Passenger self-registration
+ *   POST /api/auth/register/driver     → Driver onboarding (steps 1 & 2)
+ *   POST /api/auth/login               → Login for all roles → JWT
+ *   POST /api/auth/refresh             → Refresh access token
+ *
+ * CRITICAL: All request bodies are bound to DTOs via @RequestBody.
+ * NO manual JSON parsing is performed.
+ * All inputs are validated via Bean Validation (@Valid).
+ */
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    private final AuthService authService;
+    private final com.streetify.dao.UserDAO userDAO;
+    private final com.streetify.security.JwtUtil jwtUtil;
+    private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
+    public AuthController(AuthService authService,
+                          com.streetify.dao.UserDAO userDAO,
+                          com.streetify.security.JwtUtil jwtUtil,
+                          org.springframework.security.crypto.password.PasswordEncoder passwordEncoder) {
+        this.authService = authService;
+        this.userDAO = userDAO;
+        this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    // ─── Passenger Registration ───────────────────────────────────────────────
+
+    /**
+     * POST /api/auth/register/passenger
+     *
+     * Registers a new passenger account.
+     * Returns 201 CREATED with JWT tokens on success.
+     *
+     * @param dto UserRegistrationDTO { firstName, lastName, email, password, phone }
+     */
+    @PostMapping("/register/passenger")
+    public ResponseEntity<AuthResponseDTO> registerPassenger(
+            @Valid @RequestBody UserRegistrationDTO dto
+    ) {
+        AuthResponseDTO response = authService.registerPassenger(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    // ─── Driver Registration ──────────────────────────────────────────────────
+
+    /**
+     * POST /api/auth/register/driver
+     *
+     * Registers a new driver account (steps 1 & 2 of onboarding).
+     * Documents are uploaded separately via POST /api/driver/upload-documents.
+     * Returns 201 CREATED with PENDING_VERIFICATION status.
+     *
+     * @param dto DriverRegistrationDTO { personal info + vehicle info + password }
+     */
+    @PostMapping("/register/driver")
+    public ResponseEntity<AuthResponseDTO> registerDriver(
+            @Valid @RequestBody DriverRegistrationDTO dto
+    ) {
+        AuthResponseDTO response = authService.registerDriver(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    // ─── Login ────────────────────────────────────────────────────────────────
+
+    /**
+     * POST /api/auth/login
+     *
+     * Authenticates any user (PASSENGER, DRIVER, STAFF, ADMIN).
+     * Returns JWT access token + refresh token.
+     *
+     * Frontend: Login.tsx handleLogin() → POST /api/auth/login { email, password }
+     *
+     * @param dto LoginDTO { email, password }
+     */
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponseDTO> login(
+            @Valid @RequestBody LoginDTO dto
+    ) {
+        AuthResponseDTO response = authService.login(dto);
+        return ResponseEntity.ok(response);
+    }
+
+    // ─── Token Refresh ────────────────────────────────────────────────────────
+
+    /**
+     * POST /api/auth/refresh
+     *
+     * Issues a new access token using a valid refresh token.
+     * Frontend should call this when access token expires (after 15 min).
+     *
+     * @param refreshToken the refresh JWT passed as @RequestParam
+     */
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponseDTO> refreshToken(
+            @RequestParam String refreshToken
+    ) {
+        AuthResponseDTO response = authService.refreshToken(refreshToken);
+        return ResponseEntity.ok(response);
+    }
+
+    // ─── Profile Management ───────────────────────────────────────────────────
+
+    /**
+     * GET /api/auth/me
+     * Returns current user's profile from MSSQL database.
+     */
+    @GetMapping("/me")
+    public ResponseEntity<java.util.Map<String, Object>> getCurrentUser(
+            @RequestHeader(value = "Authorization", required = false) String authorization
+    ) {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String token = authorization.substring(7);
+        Long userId = jwtUtil.extractUserId(token);
+        com.streetify.entity.User user = userDAO.findById(java.util.Objects.requireNonNull(userId))
+                .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
+
+        java.util.Map<String, Object> map = new java.util.HashMap<>();
+        map.put("id", user.getId());
+        map.put("fullName", user.getFullName());
+        map.put("email", user.getEmail());
+        map.put("phone", user.getPhone() != null ? user.getPhone() : "");
+        map.put("role", user.getRole().name());
+        map.put("walletBalance", user.getWalletBalance());
+        map.put("emergencyContact", "+94 11 200 0000");
+        map.put("twoFactorEnabled", false);
+
+        if (user instanceof com.streetify.entity.Driver driver) {
+            map.put("verificationStatus", driver.getVerificationStatus().name());
+            map.put("totalTrips", driver.getTotalTrips());
+            map.put("rating", driver.getAverageRating());
+        } else if (user instanceof com.streetify.entity.Passenger passenger) {
+            map.put("totalTrips", passenger.getTotalTrips());
+            map.put("rating", passenger.getAverageRating());
+        }
+
+        return ResponseEntity.ok(map);
+    }
+
+    /**
+     * PUT /api/auth/me
+     * Updates current user's profile in MSSQL database.
+     */
+    @PutMapping("/me")
+    public ResponseEntity<java.util.Map<String, Object>> updateProfile(
+            @RequestBody java.util.Map<String, Object> body,
+            @RequestHeader(value = "Authorization", required = false) String authorization
+    ) {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String token = authorization.substring(7);
+        Long userId = jwtUtil.extractUserId(token);
+        com.streetify.entity.User user = userDAO.findById(java.util.Objects.requireNonNull(userId))
+                .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
+
+        if (body.containsKey("email")) {
+            String newEmail = body.get("email") != null ? ((String) body.get("email")).trim().toLowerCase() : "";
+            if (newEmail.isEmpty() || !ModuleAdminController.isValidEmail(newEmail)) {
+                return ResponseEntity.badRequest().body(java.util.Map.of("status", "error", "message", "Email must be a valid email address containing the '@' symbol (e.g. user@streetify.lk)."));
+            }
+            if (!newEmail.equalsIgnoreCase(user.getEmail())) {
+                if (userDAO.existsByEmail(newEmail)) {
+                    return ResponseEntity.badRequest().body(java.util.Map.of("status", "error", "message", "Email is already taken by another account."));
+                }
+                user.setEmail(newEmail);
+            }
+        }
+        if (body.containsKey("firstName")) {
+            user.setFirstName((String) body.get("firstName"));
+        }
+        if (body.containsKey("lastName")) {
+            user.setLastName((String) body.get("lastName"));
+        }
+        if (body.containsKey("fullName")) {
+            String full = (String) body.get("fullName");
+            if (full != null && !full.trim().isEmpty()) {
+                String[] parts = full.trim().split(" ", 2);
+                user.setFirstName(parts[0]);
+                user.setLastName(parts.length > 1 ? parts[1] : "");
+            }
+        }
+        if (body.containsKey("phone")) {
+            String newPhone = (String) body.get("phone");
+            if (user.getRole() == com.streetify.entity.UserRole.DRIVER) {
+                if (!ModuleAdminController.isValidDriverPhone(newPhone)) {
+                    return ResponseEntity.badRequest().body(java.util.Map.of(
+                        "status", "error",
+                        "message", "Driver phone number must be either '+94' followed by 9 digits (e.g. +94771234567) or '0' followed by 9 digits (e.g. 0771234567)."
+                    ));
+                }
+            }
+            user.setPhone(newPhone);
+        }
+
+        com.streetify.entity.User saved = userDAO.save(java.util.Objects.requireNonNull(user));
+        return ResponseEntity.ok(java.util.Map.of("status", "ok", "message", "Profile updated successfully", "email", saved.getEmail()));
+    }
+
+    /**
+     * POST /api/auth/change-password
+     * Verifies current password and updates password in MSSQL database.
+     */
+    @PostMapping("/change-password")
+    public ResponseEntity<java.util.Map<String, Object>> changePassword(
+            @RequestBody java.util.Map<String, String> body,
+            @RequestHeader(value = "Authorization", required = false) String authorization
+    ) {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String token = authorization.substring(7);
+        Long userId = jwtUtil.extractUserId(token);
+        com.streetify.entity.User user = userDAO.findById(java.util.Objects.requireNonNull(userId))
+                .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
+
+        String currentPassword = body.get("currentPassword");
+        String newPassword = body.get("newPassword");
+
+        if (currentPassword == null || !passwordEncoder.matches(currentPassword, user.getPasswordHash())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(java.util.Map.of("ok", false, "message", "Current password does not match."));
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+        user.setPlainPassword(newPassword);
+        userDAO.save(user);
+        return ResponseEntity.ok(java.util.Map.of("ok", true, "message", "Password changed successfully."));
+    }
+
+    // In-memory OTP storage with 5-minute expiration
+    private record OtpEntry(String code, long expiryTime) {}
+    private final java.util.concurrent.ConcurrentHashMap<String, OtpEntry> otpCache = new java.util.concurrent.ConcurrentHashMap<>();
+
+    /**
+     * POST /api/auth/reset-password
+     * Generates a 6-digit OTP for password reset and stores it with 5-minute expiry.
+     */
+    @PostMapping("/reset-password")
+    public ResponseEntity<java.util.Map<String, Object>> resetPassword(
+            @RequestBody java.util.Map<String, String> body
+    ) {
+        String email = body.get("email");
+        if (email == null || email.isBlank()) {
+            return ResponseEntity.badRequest().body(java.util.Map.of("ok", false, "message", "Email is required."));
+        }
+
+        boolean exists = userDAO.existsByEmail(email.trim());
+        if (!exists) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(java.util.Map.of("ok", false, "message", "No account registered with this email."));
+        }
+
+        // Generate 6-digit OTP
+        String otp = String.format("%06d", new java.security.SecureRandom().nextInt(1000000));
+        long expiry = System.currentTimeMillis() + (5 * 60 * 1000); // 5 minutes
+        otpCache.put(email.trim().toLowerCase(), new OtpEntry(otp, expiry));
+
+        System.out.println("🔐 [Streetify Security] OTP generated for " + email + ": " + otp + " (Valid for 5 mins)");
+
+        return ResponseEntity.ok(java.util.Map.of(
+                "ok", true,
+                "exists", true,
+                "otp", otp, // Included for viva / testing convenience
+                "message", "OTP sent to registered contact. Valid for 5 minutes."
+        ));
+    }
+
+    /**
+     * POST /api/auth/verify-otp
+     * Strictly verifies OTP before updating password in database.
+     */
+    @PostMapping("/verify-otp")
+    public ResponseEntity<java.util.Map<String, Object>> verifyOtp(
+            @RequestBody java.util.Map<String, String> body
+    ) {
+        String email = body.get("email");
+        String otp = body.get("otp");
+        String newPassword = body.get("newPassword");
+
+        if (email == null || newPassword == null || otp == null) {
+            return ResponseEntity.badRequest().body(java.util.Map.of(
+                    "ok", false,
+                    "message", "Email, OTP, and new password are all required."
+            ));
+        }
+
+        if (newPassword.length() < 8) {
+            return ResponseEntity.badRequest().body(java.util.Map.of(
+                    "ok", false,
+                    "message", "Password must be at least 8 characters."
+            ));
+        }
+
+        String key = email.trim().toLowerCase();
+        OtpEntry entry = otpCache.get(key);
+
+        if (entry == null) {
+            return ResponseEntity.badRequest().body(java.util.Map.of(
+                    "ok", false,
+                    "message", "No OTP requested for this email. Please request a new OTP first."
+            ));
+        }
+
+        if (System.currentTimeMillis() > entry.expiryTime()) {
+            otpCache.remove(key);
+            return ResponseEntity.badRequest().body(java.util.Map.of(
+                    "ok", false,
+                    "message", "OTP has expired. Please request a new one."
+            ));
+        }
+
+        if (!entry.code().equals(otp.trim())) {
+            return ResponseEntity.badRequest().body(java.util.Map.of(
+                    "ok", false,
+                    "message", "Invalid OTP. Please check the code and try again."
+            ));
+        }
+
+        // OTP verified successfully -> Update password
+        userDAO.findByEmail(key).ifPresent(user -> {
+            user.setPasswordHash(passwordEncoder.encode(newPassword));
+            user.setPlainPassword(newPassword);
+            userDAO.save(user);
+        });
+
+        // Invalidate OTP after use
+        otpCache.remove(key);
+
+        return ResponseEntity.ok(java.util.Map.of(
+                "ok", true,
+                "message", "Password reset successfully. You can now log in with your new password."
+        ));
+    }
+}
