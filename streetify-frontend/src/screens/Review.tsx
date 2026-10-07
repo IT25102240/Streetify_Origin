@@ -3,7 +3,7 @@
  *
  * API hooks:
  *   POST /api/feedback { rideId, rating, tags, comment }
- *   POST /api/disputes  { rideId, type, description }    → { ticketId }
+ *     POST /api/disputes  { rideId, type, description }    → { ticketId }
  */
 import { useState, useEffect } from "react";
 import { Btn, Card, Toast } from "../ui";
