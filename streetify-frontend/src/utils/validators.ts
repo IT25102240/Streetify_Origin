@@ -8,7 +8,7 @@
  */
 
 export const EMAIL_ERROR_MSG =
-  "Email must be a valid email address containing the '@' symbol (e.g. user@streetify.lk).";
+   "Email must be a valid email address containing the '@' symbol (e.g. user@streetify.lk).";
 
 export function isValidEmail(email?: string | null): boolean {
   if (!email || typeof email !== "string") return false;
