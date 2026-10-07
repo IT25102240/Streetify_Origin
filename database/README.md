@@ -3,7 +3,7 @@
 This folder contains all the official Microsoft SQL Server scripts for the Streetify platform.
   
 ---
-
+  
 ## 📂 File Structure & Execution Order
 
 | File | Purpose | When to Run |
