@@ -7,7 +7,7 @@
  *   GET    /api/disputes                         → Ticket[]
  *   GET    /api/disputes/:id                     → Ticket (detail)
  *   PATCH  /api/disputes/:id/resolve             { resolution, status } → { ok }
- *   GET    /api/disputes/stats                   → { open, resolved, avgResponseHours }
+ *   GET      /api/disputes/stats                   → { open, resolved, avgResponseHours }
  */
 import { useState, useEffect } from "react";
 import { Btn, Card, Pill, Toast } from "../ui";
