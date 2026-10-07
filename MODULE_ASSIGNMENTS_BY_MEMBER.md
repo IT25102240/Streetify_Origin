@@ -6,7 +6,7 @@ Based on the codebase analysis, here are the project files grouped by the 6 team
   
 ## 1. 👤 **Lahiru Peris (IT25102208)** - Nayanamina A.R.L.P.
 ### Module: User Account & Verification
-
+  
 #### **Frontend Files:**
 - `streetify-frontend/src/screens/Login.tsx` - Login/authentication screen
 - `streetify-frontend/src/screens/Profile.tsx` - User profile management
