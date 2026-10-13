@@ -4,7 +4,7 @@ import com.streetify.dao.DriverDAO;
 import com.streetify.dao.ReviewDAO;
 import com.streetify.dao.TripDAO;
 import com.streetify.dto.ReviewSubmitDTO;
-import com.streetify.entity.Trip;
+import com.streetify.entity.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

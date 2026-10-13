@@ -6,7 +6,7 @@ import com.streetify.dao.TripDAO;
 import com.streetify.dao.UserDAO;
 import com.streetify.dto.DisputeResolveDTO;
 import com.streetify.dto.DisputeSubmitDTO;
-import com.streetify.entity.Trip;
+import com.streetify.entity.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

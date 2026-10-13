@@ -5,7 +5,7 @@ import com.streetify.dto.AuthResponseDTO;
 import com.streetify.dto.DriverRegistrationDTO;
 import com.streetify.dto.LoginDTO;
 import com.streetify.dto.UserRegistrationDTO;
-import com.streetify.entity.Vehicle;
+import com.streetify.entity.*;
 import com.streetify.security.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
